@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100vh; 
+            overflow: hidden; 
+            background-color: #f3f4f6; 
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block; 
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        #loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+            z-index: 10;
+        }
+
+        /* ตัววงกลมหมุนๆ */
+        .spinner {
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #4b5563;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loading-text">กำลังโหลดข้อมูล...</div>
+    </div>
+
+    <iframe id="gasApp" src=""></iframe>
+
+    <script>
+         const GAS_URL = "https://script.google.com/macros/s/AKfycbyi--x24MyOhoyjzfqCl1VWCp9OVwczz-LYLqwagFVVCBOXL03cIFam_wOgi3q2Y4-2/exec";    
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryString = urlParams.toString();
+        const targetUrl = queryString ? GAS_URL + "?" + queryString : GAS_URL;
+        const iframe = document.getElementById('gasApp');
+        const loader = document.getElementById('loader');
+        iframe.src = targetUrl;
+        iframe.onload = function() {
+            loader.style.display = 'none';
+            iframe.style.opacity = '1';
+        };
+    </script>
+</body>
+</html>
